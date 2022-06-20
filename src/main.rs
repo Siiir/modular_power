@@ -32,7 +32,7 @@ fn read_var<T>(buf: &mut String)->Option<T> where T:FromStr, <T as FromStr>::Err
         // Reading from `stdin` to `buf`
         buf.clear();
         if let Err(e) = stdin().read_line(buf){
-            println!("\nAn error cought while reading line from standard input: {e:?}");
+            println!("\nAn error cought while reading line from standard input: {:?}",e);
             return None;
         }
 
@@ -64,7 +64,7 @@ macro_rules! read_var {
         {
             print!(concat!(stringify!($var), "= "));
             if let Err(e) = stdout().flush(){
-                println!("An error cought while flushing stdout buffer: {e:?}");
+                println!("An error cought while flushing stdout buffer: {:?}",e);
             }
             $var= read_var(&mut $buf)?;
         }
