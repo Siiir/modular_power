@@ -9,25 +9,26 @@ use {
         
         stringify,
     },
-    num_traits::Zero,
+    num_traits::{Zero,One},
+    num_bigint::{BigUint},
 };
 
-fn pow_mod(base:u32, mut exp:u64, modulo:u32)->u32{
-    // Shadowing variables with incompatible constraint types.
-    let mut base= u64::from(base);
-    let modulo= u64::from(modulo);
+fn pow_mod(mut base:BigUint, exp:&BigUint, modulus:&BigUint)->BigUint{
+    // Simplifying base
+    base%= modulus;
 
     // The main algorithm.
-    let mut y= 1u64;
-    loop{
-        if exp&1==1{
-            y= y*base%modulo;
+    let mut y= BigUint::one();
+    for mut u32_dig in exp.iter_u32_digits(){
+        for _ in 0..32{
+            if u32_dig&1==1{
+                y*=&base; y%=modulus;
+            }
+            u32_dig>>=1;
+            base=&base*&base; base%=modulus;
         }
-        exp>>=1;
-        if exp==0{break;}
-        base= base*base%modulo;
     }
-    return y as u32;
+    return y;
 }
 
 fn read_var<T>(buf: &mut String)->Option<T> where T:FromStr, <T as FromStr>::Err: Debug{
@@ -98,19 +99,15 @@ fn read_vars<K,N,M>()->Option<(K,N,M)>where
 }
 
 fn main() {
-    type K= u128; type N= u64; type M= u32;
+    type K= BigUint; type N= BigUint; type M= BigUint;
     println!("Welcome to super fast `modular_power` algorithm by Tomasz Nehring.");
     println!("I'll calculate [k^n mod m] for you, where:");
-    println!("  k, n, m are integers and {}<=k<={}, {}<=n<={}, {}<m<={} .",
-        0, K::MAX, 0, N::MAX, 0, M::MAX);
+    println!("  k, n, m are integers and 0<=k, 0<=n, 0<m .");
     println!("Now input values for these three variables.");
 
     if let Some((k,n,m)) = read_vars::<K,N,M>(){
-        // Simplify inputed values.
-        let simplified_k:M= k.rem_euclid(m.into()) as M;
-
-        println!("\n{} ^ {} mod {} = {}",
-            k, n, m,  pow_mod(simplified_k, n, m));
+        print!("\n{} ^ {} mod {} = ", &k, &n, &m);
+        print!("{}\n", pow_mod(k, &n, &m));
     }
     
     println!("\nPress {{ENTER}} to terminate the program.");
