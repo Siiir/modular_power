@@ -1,12 +1,15 @@
 // Algorithm optimized for 64-bit proccessor.
 
-use std::{
-    fmt::Debug,
-    io::{Read, stdin},
-    io::{Write, stdout},
-    str::FromStr,
-
-    stringify,
+use {
+    std::{
+        fmt::Debug,
+        io::{Read, stdin},
+        io::{Write, stdout},
+        str::FromStr,
+        
+        stringify,
+    },
+    num_traits::Zero,
 };
 
 fn pow_mod(base:u32, mut exp:u64, modulo:u32)->u32{
@@ -71,35 +74,43 @@ macro_rules! read_var {
     };
 }
 
-fn read_vars()->Option<(u32,u64,u32)>{
+fn read_vars<K,N,M>()->Option<(K,N,M)>where
+    K:FromStr, <K as FromStr>::Err: Debug,
+    N:FromStr, <N as FromStr>::Err: Debug,
+    M:FromStr, <M as FromStr>::Err: Debug, M:Zero
+    {
     /*k Can be possibly extended to i128 with some implied edits.*/
-    let (k, n, mut m):(u128,u64,u32);
+    let (k, n, mut m):(K,N,M);
     let mut buf= String::new();
-
+    
     read_var!(k, buf);
     read_var!(n, buf);
     loop {
         read_var!(m, buf);
-        if m!=0{break;}
+        if !m.is_zero(){break;}
         print!(concat!(
             "Error:  m=0 is out of domain.\n",
             "Try again to enter a correct value.\n"
         ));
     }
-    
-    // Simplify inputed values.
-    let k= k.rem_euclid(m.into()) as u32;
 
     return Some((k, n, m));
 }
 
 fn main() {
+    type K= u128; type N= u64; type M= u32;
     println!("Welcome to super fast `modular_power` algorithm by Tomasz Nehring.");
-    println!("I'll calculate [k^n mod m] for you, where k, n, m are integers, k>=0, n>=0, m>0.");
+    println!("I'll calculate [k^n mod m] for you, where:");
+    println!("  k, n, m are integers and {}<=k<={}, {}<=n<={}, {}<m<={} .",
+        0, K::MAX, 0, N::MAX, 0, M::MAX);
     println!("Now input values for these three variables.");
 
-    if let Some((k,n,m)) = read_vars(){
-        println!("\nk^n mod m = {}", pow_mod(k, n, m));
+    if let Some((k,n,m)) = read_vars::<K,N,M>(){
+        // Simplify inputed values.
+        let simplified_k:M= k.rem_euclid(m.into()) as M;
+
+        println!("\n{} ^ {} mod {} = {}",
+            k, n, m,  pow_mod(simplified_k, n, m));
     }
     
     println!("\nPress {{ENTER}} to terminate the program.");
