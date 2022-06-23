@@ -1,8 +1,7 @@
-mod lib;
 mod app;
 
 use {
-    lib::pow_mod,
+    modular_power::pow_mod,
     app::read_vars,
 
     std::{
@@ -10,7 +9,6 @@ use {
     },
     num_bigint::{BigUint},
 };
-
 
 /*
 1. Greets user.

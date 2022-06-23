@@ -1,5 +1,5 @@
 #[cfg(test)]
-mod lib_tests;
+mod tests;
 
 use{
     num_traits::{One},
