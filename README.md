@@ -1,1 +1,2 @@
-This pre-release has neither docs nor tests.
+This release weak docs and full tests.
+No docs-test.
