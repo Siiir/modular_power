@@ -10,11 +10,10 @@ use{
     num_traits::Zero,
 };
 
-/*Reads subsequent lines from stdin.
-Attempts to parse each as `T`. On success returns `T` instance.
-If fails due to incorrect format. Repeats attempt with next line.
-Upon failure caused by stdin, returns None.
-*/
+/// Reads subsequent lines from stdin.
+/// Attempts to parse each as `T`. On success returns `T` instance.
+/// If fails due to incorrect format. Repeats attempt with next line.
+/// Upon failure caused by stdin, returns None.
 fn read_var<T>(buf: &mut String)->Option<T> where T:FromStr, <T as FromStr>::Err: Debug{
     loop{
         // Reading from `stdin` to `buf`
@@ -47,10 +46,9 @@ fn read_var<T>(buf: &mut String)->Option<T> where T:FromStr, <T as FromStr>::Err
     }
 }
 
-/*
-Prompts for inputing variable value.
-Next, runs read_var function.
-*/
+
+/// Prompts for inputing variable value.
+/// Next, runs read_var function.
 macro_rules! read_var {
     ($var:ident, $buf:expr) => {
         {
@@ -63,7 +61,7 @@ macro_rules! read_var {
     };
 }
 
-/*Reads 3 generic values that are needed for pow_mod algorithm.*/
+/// Reads 3 generic values that are needed for pow_mod algorithm.
 pub fn read_vars<K,N,M>()->Option<(K,N,M)>where
     K:FromStr, <K as FromStr>::Err: Debug,
     N:FromStr, <N as FromStr>::Err: Debug,
