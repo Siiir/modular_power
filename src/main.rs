@@ -23,9 +23,10 @@
 
 
 mod app;
+mod lib;
 
 use {
-    modular_power::pow_mod,
+    lib::pow_mod,
     app::read_vars,
 
     std::{
