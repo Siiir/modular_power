@@ -3,7 +3,7 @@
   is on on **crates.io**.  
   Whole docs are in source code.
 ## Tests
-  **Binary app** has been tested on **x86_64-pc-windows-msvc**.  
+  **Binary app** has been tested on x86_64-pc-windows-msvc, x86_64-unknown-linux-gnu.  
   **Library** has **unit tests** passing on **x86_64-pc-windows-msvc** .
 ## Specifications
   **Git-related** things are in public **GitHub** repository.  
