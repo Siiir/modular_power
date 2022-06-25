@@ -28,7 +28,7 @@ fn read_var<T>(buf: &mut String)->Option<T> where T:FromStr, <T as FromStr>::Err
         if buf.as_bytes()[buf.len()-1]==b'\r'{buf.pop();}
 
         // Returning parsed input
-        return match buf.parse(){
+        return match buf.trim().parse(){
             Ok(v)=>Some(v),
             Err(e)=>{
                 println!(
